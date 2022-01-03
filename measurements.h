@@ -7,8 +7,6 @@
 
 #include <stdint.h>
 
-//  Returns time since program execution
-uint32_t get_time();
 //  Returns dynamic strain magnitude
 double get_mag();
 //  Returns dynamic strain frequency

@@ -83,7 +83,7 @@ Generally follows the form:
     - *Repeats indefinitely*  
 
 #### Runtime loop:
-Primary program loop that gets measurements and then writes them to a file.
+Primary program loop that gets measurements and then writes them to a file.  
 **Flow:**  
 - Outside the loop the program start date is written with the header  
 - Loop waits for exit command, while(!exit), where exit is a global atomic  
