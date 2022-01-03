@@ -1,54 +1,54 @@
-Concepts:
-    Hysteresis:
-        Measurements are taken at a fixed rate.
-        When a measurement goes above the threshold
-        the sample rate increases. As long as the measurements
-        remain above the threshold they will continue at this rate.
-        When the measurements go below the threshold there will be a
-        continued time of increased sampling. If the measurement goes back
-        above the threshold then the timer will reset. If the timer runs out
-        then the sample rate will be lowered.
-    Time stamps:
-        Time stamps are relative to the beginning of program
-        execution. Time is in format of Days-Minutes-Seconds
-        and the calendar date of program execution is recorded.
-    Measurements:
-        Measurements are taken on intervals.
-            *Initial-temperature
-            *Dynamic-Strain-Magnitude
-            *Dynamic-Strain-Frequency
-            *Final-temperature
-        Measurements are recorded in CSV format with a header.
-        Measurement headers are in the following format,
-        <Start Time>
-        <Measurement Time><Intitial Temp><Magnitude><Frequency><Final Temp>
-        
-        Header Example:
-            Start Time 1-3-2022-11-32-45
-            Time | ITemp | Mag | Freq | FTemp
+# Concepts:
 
-        Measurement data is recorded in the following format,
-        <Integer><Float><Sci><Sci><Float>
+## Hysteresis:
 
-        Data Example:
-            0  | 30   | 1.0e-3 | 2.0e2  | 30.5
-            5  | 31   | 1.1e-2 | 2.01e2 | 31.2
-            10 | 31.4 | 2.0e-2 | 2.0e2  | 31.3
+Measurements are taken at a fixed rate.  
+When a measurement goes above the threshold the sample rate increases. As long as the measurements remain above the threshold they will continue at this rate.  
+When the measurements go below the threshold there will be a continued time of increased sampling. If the measurement goes back above the threshold then the timer will reset. If the timer runs out then the sample rate will be lowered.  
 
-Code:
-    main.c:
+## Time stamps:
+
+Time stamps are relative to the beginning of program execution. Time is in format of Days-Minutes-Seconds and the calendar date of program execution is recorded.  
+
+## Measurements:
+
+Measurements are taken on intervals.  
+1. **Initial-temperature**
+2. **Dynamic-Strain-Magnitude**
+3. **Dynamic-Strain-Frequency**
+4. **Final-temperature**  
+Measurements are recorded in CSV format with a header.
+Measurement headers are in the following format:  
+    `<Start Time>`  
+    `<Measurement Time><Intitial Temp><Magnitude><Frequency><Final Temp>`  
+    Header Example:
+        `Start Time 1-3-2022-11-32-45`  
+        `Time | ITemp | Mag | Freq | FTemp`  
+Measurement data is recorded in the following format:  
+    `<Integer><Float><Sci><Sci><Float>`  
+    Data Example:  
+        `0  | 30   | 1.0e-3 | 2.0e2  | 30.5`  
+        `5  | 31   | 1.1e-2 | 2.01e2 | 31.2`  
+        `10 | 31.4 | 2.0e-2 | 2.0e2  | 31.3`  
+
+# Code:
+
+## main.c:
+
         The purpose of the main function is to have an
         easy to access initialization to the program. In this
         file the serial device will be registered and configured.
         The runtime environment will also be initialized and given
         appropriate arguments.
-    runtime.c:
+## runtime.c:
+
         The runtime environment in this function is responsible for
         dynamically measuring the data at two fixed sample rates depending
         upon user provided thresholds. The user provided thresholds are sent
         either via config file or via command line depending on the selected mode.
         Command line mode is a debug mode.
-        TODO:
+### TODO:
+
             - Selectable modes, debug and config: (High priority)
                 Debug mode:
                     Takes threshold values on the command line, every time a new threshold value is typed the
@@ -119,7 +119,8 @@ Code:
                             Update rate, start timer.
                     - Acquire mutex to prevent user input during this time.
 
-    measurement.c:
+## measurement.c:
+
         This file contains custom commands that are sent to the oscilloscope to record
         and return measurement data. This file has four functions.
         - get_time:
@@ -131,7 +132,7 @@ Code:
         - get_temp:
             Returns temperature reading from thermocouple
 
-// May not need.
-    file.c:
+## file.c:
+
         This file contains a custom wrapper around C file operations to cleanly write to output data files.
         Takes a formatted string and writes to output.
