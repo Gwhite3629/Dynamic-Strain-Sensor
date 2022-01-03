@@ -1,0 +1,39 @@
+Concepts:
+    Hysteresis:
+        Measurements are taken at a fixed rate.
+        When a measurement goes above the threshold
+        the sample rate increases. As long as the measurements
+        remain above the threshold they will continue at this rate.
+        When the measurements go below the threshold there will be a
+        continued time of increased sampling. If the measurement goes back
+        above the threshold then the timer will reset. If the timer runs out
+        then the sample rate will be lowered.
+    Time stamps:
+        Time stamps are relative to the beginning of program
+        execution. Time is in format of Days-Minutes-Seconds
+        and the calendar date of program execution is recorded.
+    Measurements:
+        Measurements are taken on intervals.
+            *Initial-temperature
+            *Dynamic-Strain-Magnitude
+            *Dynamic-Strain-Frequency
+            *Final-temperature
+        Measurements are recorded in CSV format with a header.
+        Measurement headers are in the following format,
+        <Start Time>
+        <Measurement Time><Intitial Temp><Magnitude><Frequency><Final Temp>
+        
+        Header Example:
+            Start Time 1-3-2022-11-32-45
+            Time | ITemp | Mag | Freq | FTemp
+
+        Measurement data is recorded in the following format,
+        <Integer><Float><Sci><Sci><Float>
+
+        Data Example:
+            0  | 30   | 1.0e-3 | 2.0e2  | 30.5
+            5  | 31   | 1.1e-2 | 2.01e2 | 31.2
+            10 | 31.4 | 2.0e-2 | 2.0e2  | 31.3
+
+Code:
+    

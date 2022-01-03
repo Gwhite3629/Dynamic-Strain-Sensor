@@ -7,9 +7,9 @@
 #include "GPIB_prof.h"
 #include "serial.h"
 
-#define CHECK /*
-if (ret < 0)\
-    goto fail;*/
+#define CHECK \
+    if (ret < 0) \
+        goto fail;
 
 //Default profile
 int def(HANDLE fd)
