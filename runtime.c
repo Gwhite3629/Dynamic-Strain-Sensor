@@ -2,6 +2,7 @@
 //  Dynamic Strain Sensor
 //  Grady White
 //  1/3/22
+#include <stdbool.h>
 #include <stdatomic.h>
 #include <pthread.h>
 #include <windows.h>
@@ -13,12 +14,17 @@
 #include "measurements.h"
 #include "file.h"
 
-atomic_int Threshold;
-atomic_bool exit;
-atomic_bool Trigger;
+#define HYSTERESIS_TIME 2
 
-pthread_mutex_t update;
-pthread_mutex_t measure;
+atomic_int Threshold;
+atomic_bool exit_flag = 0;
+atomic_bool Trigger = 0;
+
+pthread_mutex_t update = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t measure = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t wait = PTHREAD_MUTEX_INITIALIZER;
+
+pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 static void *update_thresh(void *arg)
 {
@@ -34,10 +40,41 @@ static void *update_thresh(void *arg)
 
     Threshold = temp_thresh;
 
-    pthread_mutex_unlock(&update)
+    pthread_mutex_unlock(&update);
 
 fail:
     pthread_exit(NULL);
+}
+
+static void *timer(void *arg) {
+    bool *delay = (bool *)arg;
+
+    struct timespec timeout;
+    clock_gettime(CLOCK_REALTIME, &timeout);
+    timeout.tv_sec += (60 * HYSTERESIS_TIME)
+
+
+
+    pthread_testcancel();
+    pthread_mutex_lock(&wait);
+    pthread_cond_timedwait(&cond, &wait, )
+    pthread_mutex_unlock(&wait);
+}
+
+static void *hysteresis(void *arg)
+{
+    pthread_t thr;
+    bool delay;
+
+    pthread_create(&thr, NULL, &timer, (void *)delay);
+
+    while(!exit) {
+        if (Trigger) {
+            if (delay) {
+
+            }
+        }
+    }
 }
 
 int runtime(HANDLE dev, atomic_int *rate)
@@ -65,7 +102,11 @@ int runtime(HANDLE dev, atomic_int *rate)
         freq = get_freq();
         Ftemp = get_temp();
 
-        Dat_write();
+        dat_Write(dev,
+                  Itemp,
+                  mag,
+                  freq,
+                  Ftemp);
 
         pthread_mutex_unlock(&measure);
     }
