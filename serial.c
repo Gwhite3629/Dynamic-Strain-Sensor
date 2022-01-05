@@ -145,18 +145,14 @@ SSIZE_T read_port(HANDLE port, char *buff, size_t size)
 //  Configure GPIB
 int GPIB_conf(HANDLE fd, int profile)
 {
-    int ret;
+    int ret = 0;
 
     switch (profile) {
         case 0:
             ret = def(fd);
-            if (ret < 0)
-                goto fail;
             break;
     }
 
-    return 0;
-    
-fail:
-    return -1;
+exit:
+    return ret;
 }

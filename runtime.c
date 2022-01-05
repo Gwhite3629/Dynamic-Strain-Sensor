@@ -14,8 +14,6 @@
 #include "measurements.h"
 #include "file.h"
 
-#define HYSTERESIS_TIME 2
-
 atomic_int Threshold;
 atomic_bool exit_flag = 0;
 atomic_bool Trigger = 0;
@@ -42,7 +40,7 @@ static void *update_thresh(void *arg)
 
     pthread_mutex_unlock(&update);
 
-fail:
+exit:
     pthread_exit(NULL);
 }
 
@@ -51,7 +49,7 @@ static void *timer(void *arg) {
 
     struct timespec timeout;
     clock_gettime(CLOCK_REALTIME, &timeout);
-    timeout.tv_sec += (60 * HYSTERESIS_TIME);
+    timeout.tv_sec += (60);
 
 
 
@@ -77,8 +75,9 @@ static void *hysteresis(void *arg)
     }
 }
 
-int runtime(HANDLE dev, atomic_int *rate)
+int runtime(HANDLE dev)
 {
+    uint ret = 0;
     time_t start;
     time_t cur;
     double dif;
@@ -87,7 +86,6 @@ int runtime(HANDLE dev, atomic_int *rate)
     start = time(NULL);
 
     while(!exit) {
-        usleep(1/(*rate));
 
         pthread_mutex_lock(&measure);
 
@@ -111,8 +109,6 @@ int runtime(HANDLE dev, atomic_int *rate)
         pthread_mutex_unlock(&measure);
     }
 
-    return 0;
-
-fail:
-    return -1;
+exit:
+    return ret;
 }

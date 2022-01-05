@@ -9,23 +9,21 @@
 
 #define CHECK \
     if (ret < 0) \
-        goto fail;
+        goto exit;
 
 //Default profile
 int def(HANDLE fd)
 {
-    int ret;
+    int ret = 0;
 
-    ret = write_port(fd, "++mods 1\r", 9); CHECK;
-    ret = write_port(fd, "++addr 16\r", 10); CHECK;
-    ret = write_port(fd, "++eoi 0\r", 8); CHECK;
-    ret = write_port(fd, "++eot_enable 1\r", 15); CHECK;
-    ret = write_port(fd, "++eot_char 13\r", 14); CHECK;
-    ret = write_port(fd, "++ifc\r", 6); CHECK;
-    ret = write_port(fd, "++auto 1\r", 9); CHECK;
+    CHECK(ret = write_port(fd, "++mods 1\r", 9));
+    CHECK(ret = write_port(fd, "++addr 16\r", 10));
+    CHECK(ret = write_port(fd, "++eoi 0\r", 8));
+    CHECK(ret = write_port(fd, "++eot_enable 1\r", 15));
+    CHECK(ret = write_port(fd, "++eot_char 13\r", 14));
+    CHECK(ret = write_port(fd, "++ifc\r", 6));
+    CHECK(ret = write_port(fd, "++auto 1\r", 9));
 
-    return 0;
-
-fail:
-    return 0;
+exit:
+    return ret;
 }

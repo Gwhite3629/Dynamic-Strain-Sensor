@@ -83,6 +83,10 @@ General functions for serial control. Uses windows serial functionality. A Linux
 
 Simple GPIB controls. There is only one profile named `def`, this is the default configuration. Other configurations can easily be added by creating a function that looks like `def` in this file and adding a case to the `GPIB_conf` function in `serial.c`. Finally the profile is selected in `main.c`.
 
+## setup.c
+
+This file controls the initial instrument setup and configuration including synchronization of the instrument with measurement threads as well as calibration and test or baseline measurements.
+
 # Building
 
 This program relies on C standard libraries and POSIX standard libraries. Any compiler that can use POSIX libraries will correctly compile this program. Releases are built using MinGW-x64 and gcc. Windows releases are statically linked to ensure that it is portable to any windows computer. Linux or POSIX builds do not need to be statically linked.

@@ -7,6 +7,10 @@
 
 #include <windows.h>
 
+#define CHECK(ret) \
+    if (ret < 0) \
+        goto exit;
+
 int def(HANDLE fd);
 
 #endif //_GPIB_PROF_H_
