@@ -51,13 +51,13 @@ static void *timer(void *arg) {
 
     struct timespec timeout;
     clock_gettime(CLOCK_REALTIME, &timeout);
-    timeout.tv_sec += (60 * HYSTERESIS_TIME)
+    timeout.tv_sec += (60 * HYSTERESIS_TIME);
 
 
 
     pthread_testcancel();
     pthread_mutex_lock(&wait);
-    pthread_cond_timedwait(&cond, &wait, )
+    pthread_cond_timedwait(&cond, &wait, &timeout);
     pthread_mutex_unlock(&wait);
 }
 

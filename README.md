@@ -25,7 +25,7 @@ Measurements are saved in specific cases.
 ### 1. **Large variation of moving average**
 
 Variations in the moving average mean the average has met one of several threshold values that are pre-defined empirically. These values determine when vibrations of noticeable strength are occuring.  
-    **Data recorded:**
+    **Data recorded:**  
 - FFT
 - Average temperature
 - Peak magnitude
@@ -33,8 +33,8 @@ Variations in the moving average mean the average has met one of several thresho
 
 ### 2. **Fixed increment in time**
 
-Data should be saved in cases of obvious vibration, but general behaviour is also important. Data is saved sporadically to ensure data is plentiful.
-    **Data recorded:**
+Data should be saved in cases of obvious vibration, but general behaviour is also important. Data is saved sporadically to ensure data is plentiful.  
+    **Data recorded:**  
 - FFT
 - Average temperature
 - Peak magnitude
@@ -42,8 +42,8 @@ Data should be saved in cases of obvious vibration, but general behaviour is als
 
 ### 3. **Large spikes:**
 
-Data is recorded when large spikes in magnitude are detected. These are expected to be frequent and will have thresholds associated with them. This method is to ensure that the rolling average doesn't miss any important fluctuations.
-    **Data recorded:**
+Data is recorded when large spikes in magnitude are detected. These are expected to be frequent and will have thresholds associated with them. This method is to ensure that the rolling average doesn't miss any important fluctuations.  
+    **Data recorded:**  
 - Average temperature
 - Peak magnitude
 - Average magnitude
@@ -53,9 +53,11 @@ Data is recorded when large spikes in magnitude are detected. These are expected
 ## main.c:
 
 The purpose of the main function is to have an easy to access initialization to the program. In this file the serial device will be registered and configured. The runtime environment will also be initialized and given appropriate arguments.
+
 ## runtime.c:
 
 The runtime environment in this function is responsible for dynamically acquiring and moving data.
+
 ### TODO:
 
 #### *Config interpretation:*
