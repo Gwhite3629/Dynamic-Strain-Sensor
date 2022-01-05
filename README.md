@@ -65,4 +65,34 @@ The runtime environment in this function is responsible for dynamically acquirin
 Config file will include:
 - Moving average thresholds
 - Peak value thresholds
-- Generic data gathering rate  
+- Generic data gathering rate 
+
+## file.c
+
+Controls file operations. Functions in this file are entirely responsible for every read and write to files in this program.
+
+## measurement.c
+
+Controls data acquisition from the oscilloscope. Functions in this file are entirely responsible for control and operation of serial devices.
+
+## serial.c
+
+General functions for serial control. Uses windows serial functionality. A Linux build could easily be made for this program by replacing all instances of `HANDLE` with a file descriptor `int`. Linux implementation would also use a different serial controller available in the resources folder.
+
+## GPIB_prof.c
+
+Simple GPIB controls. There is only one profile named `def`, this is the default configuration. Other configurations can easily be added by creating a function that looks like `def` in this file and adding a case to the `GPIB_conf` function in `serial.c`. Finally the profile is selected in `main.c`.
+
+# Building
+
+This program relies on C standard libraries and POSIX standard libraries. Any compiler that can use POSIX libraries will correctly compile this program. Releases are built using MinGW-x64 and gcc. Windows releases are statically linked to ensure that it is portable to any windows computer. Linux or POSIX builds do not need to be statically linked.
+
+Single line Windows compilation:
+```
+gcc -pthread -static -o DynamicSensor.exe main.c file.c GPIB_prof.c measurement.c runtime.c serial.c
+```
+
+Single line Linux compilation:
+```
+gcc -pthread -o DynamicSensor main.c file.c GPIB_prof.c measurement.c runtime.c serial.c
+```

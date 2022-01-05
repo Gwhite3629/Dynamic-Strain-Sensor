@@ -82,7 +82,7 @@ HANDLE open_port(const char *dev)
         return INVALID_HANDLE_VALUE;
     
     state.DCBlength = sizeof(DCB);
-    state.BaudRate = CBR_9600;
+    state.BaudRate = CBR_128000;
     state.ByteSize = 9;
     state.fBinary = TRUE;
     state.fErrorChar = FALSE;
@@ -102,11 +102,11 @@ HANDLE open_port(const char *dev)
     state.fOutX = FALSE;
 
     success = SetCommState(port, &state);
-    if (!success) (
+    if (!success) {
         print_error("Failed to set serial settings");
         CloseHandle(port);
         return INVALID_HANDLE_VALUE;
-    )
+    }
 
     return port;
 }
@@ -136,7 +136,7 @@ SSIZE_T read_port(HANDLE port, char *buff, size_t size)
     BOOL success = ReadFile(port, buff, size, &received, NULL);
     if (!success) {
         print_error("Failed to read from port");
-        return -1
+        return -1;
     }
 
     return received;
@@ -155,7 +155,7 @@ int GPIB_conf(HANDLE fd, int profile)
             break;
     }
 
-    return 0
+    return 0;
     
 fail:
     return -1;
