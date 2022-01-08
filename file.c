@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "file.h"
+#include "utils.h"
 
 int find_event(FILE *fd, fpos_t *prof_start, char *locator)
 {

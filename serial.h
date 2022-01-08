@@ -2,6 +2,7 @@
 //  Dynamic Strain Sensor
 //  Grady White
 //  1/3/22
+
 #ifndef _SERIAL_H_
 #define _SERIAL_H_
 
@@ -11,10 +12,19 @@
 
 #include "GPIB_prof.h"
 
-void print_error(char *context);
-HANDLE open_port(const char *dev);
-int read_port(HANDLE port, char *buf, size_t size);
-int write_port(HANDLE port, const char *buf, size_t size);
-int GPIB_conf(HANDLE port, int profile);
+void print_error(char *context); // Error context
+
+HANDLE open_port(const char *dev); // Name of device
+
+int read_port(HANDLE port, // Serial device
+              char *buf, // Read buffer
+              size_t size); // Number of bytes to read
+
+int write_port(HANDLE port, // Serial Device
+               const char *buf, // Write buffer
+               size_t size); // Number of bytes to write
+
+int GPIB_conf(HANDLE port, // Serial Device
+              int profile); // Profile selection
 
 #endif //_SERIAL_H_

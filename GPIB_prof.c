@@ -2,14 +2,12 @@
 //  Dynamic Strain Sensor
 //  Grady White
 //  1/3/22
+
 #include <windows.h>
 
 #include "GPIB_prof.h"
 #include "serial.h"
-
-#define CHECK \
-    if (ret < 0) \
-        goto exit;
+#include "utils.h"
 
 //Default profile
 int def(HANDLE fd)
