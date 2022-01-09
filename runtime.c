@@ -14,100 +14,55 @@
 
 #include "measurements.h"
 #include "file.h"
-
-atomic_int Threshold;
-atomic_bool exit_flag = 0;
-atomic_bool Trigger = 0;
-
-pthread_mutex_t update = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t measure = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t wait = PTHREAD_MUTEX_INITIALIZER;
-
-pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
-
-static void *update_thresh(void *arg)
-{
-    int temp_thresh = 0;
-    int prev_thresh = 0;
-
-    while(temp_thresh == prev_thresh) {
-        prev_thresh = temp_thresh;
-        scanf("%d", temp_thresh);
-    }
-
-    pthread_mutex_lock(&update);
-
-    Threshold = temp_thresh;
-
-    pthread_mutex_unlock(&update);
-
-exit:
-    pthread_exit(NULL);
-}
-
-static void *timer(void *arg) {
-    bool *delay = (bool *)arg;
-
-    struct timespec timeout;
-    clock_gettime(CLOCK_REALTIME, &timeout);
-    timeout.tv_sec += (60);
-
-
-
-    pthread_testcancel();
-    pthread_mutex_lock(&wait);
-    pthread_cond_timedwait(&cond, &wait, &timeout);
-    pthread_mutex_unlock(&wait);
-}
-
-static void *hysteresis(void *arg)
-{
-    pthread_t thr;
-    bool delay;
-
-    pthread_create(&thr, NULL, &timer, (void *)delay);
-
-    while(!exit) {
-        if (Trigger) {
-            if (delay) {
-
-            }
-        }
-    }
-}
+#include "threads.h"
 
 int runtime(HANDLE dev)
 {
-    uint ret = 0;
-    time_t start;
-    time_t cur;
-    double dif;
-    double Itemp, mag, freq, Ftemp;
+    int ret;
+    int pos;
+    int barrier = 0; // Current threshold
+    int prev_barrier = 0; // Previous threshold
 
-    start = time(NULL);
+    float *window;
 
-    while(!exit) {
+    float sum = 0;
+    float current_mag;
+    float avg;
 
-        pthread_mutex_lock(&measure);
+    // Get config data
+    Config *config;
+    char name[64] = "DEFAULT";
+    printf("Enter config name:\n");
+    scanf("%s", name);
+    get_config(config, name);
 
-        //  Record Measurements
-        cur = time(NULL);
-        dif = difftime(cur, start);
-        Itemp = get_temp();
-        mag = get_mag();
-        if (mag > Threshold) {
-            Trigger = 1;
+    // Setup window
+    int pos_max = config->AVERAGE_DATA.WINDOW_SIZE;
+    MEM(window, pos_max);
+
+    // Main runtime loop
+    while(!exit_runtime) {
+        // Get most recent strain
+        current_mag = get_mag();
+        // Average the strain
+        avg = moving_average(window,config->AVERAGE_DATA.WINDOW_SIZE, &sum, pos, current_mag);
+        // Increase location in window
+        pos++;
+        // Wrap window
+        if (pos>=pos_max)
+            pos = 0;
+
+        // Measurement conditions (non-timer)
+        if (current_mag>config->PEAK_THRESHOLD) {
+            part_measure();
+        } else if (avg>config->AVERAGE_DATA.AVERAGE_THRESHOLDS[barrier]) {
+            if (barrier < 5)
+                barrier++;
+            full_measure();
+        } else if (avg<config->AVERAGE_DATA.AVERAGE_THRESHOLDS[prev_barrier]) {
+            barrier--;
         }
-        freq = get_freq();
-        Ftemp = get_temp();
-
-        dat_Write(dev,
-                  Itemp,
-                  mag,
-                  freq,
-                  Ftemp);
-
-        pthread_mutex_unlock(&measure);
+        usleep(1000000*(1/config->SAMPLE_FREQUENCY));
     }
 
 exit:

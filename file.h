@@ -17,7 +17,7 @@ int find_event(FILE *fd, // File to search
                char *locator); // String to search for
 
 //  Acquires data from config file and puts it into a struct
-int get_config(config *config, // Config struct
+int get_config(Config *config, // Config struct
                char *name); // Config selection
 
 //  Template for data write

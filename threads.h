@@ -6,4 +6,12 @@
 #ifndef _THREADS_H_
 #define _THREADS_H_
 
+#include <stdatomic.h>
+
+atomic_bool exit_runtime = 0;
+
+void *quit_condition(void *arg);
+
+void *time_measure(void *arg);
+
 #endif //_THREADS_H_

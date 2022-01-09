@@ -37,12 +37,14 @@ exit:
     return ret;
 }
 
-int get_config(config *config, char *name)
+int get_config(Config *config, char *name)
 {
     uint ret = 0;
 
     FILE *config_file;
     fpos_t *config_start = NULL;
+
+    MEM(config, sizeof(Config));
 
     MEM(config_start, sizeof(fpos_t));
 

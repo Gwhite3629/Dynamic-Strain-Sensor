@@ -8,11 +8,10 @@
 
 #include <stdint.h>
 
-//  Returns dynamic strain magnitude
-double get_mag();
-//  Returns dynamic strain frequency
-double get_freq();
-//  Returns temperature reading from thermocouple
-float get_temp();
+void part_measure();
+
+void full_measure();
+
+float get_mag();
 
 #endif //_MEASUREMENTS_H_

@@ -31,11 +31,11 @@ typedef struct AVERAGE_DATA{
 } AVERAGE_DATA;
 
 //  Config data
-typedef struct config {
+typedef struct Config {
     AVERAGE_DATA AVERAGE_DATA;
     float PEAK_THRESHOLD;
     uint SAMPLE_FREQUENCY;
-} config;
+} Config;
 
 //  MACROS
 
