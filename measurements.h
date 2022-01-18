@@ -8,10 +8,14 @@
 
 #include <stdint.h>
 
+#define FULL 0
+#define PART 1
+#define SING 2
+
 void part_measure();
 
 void full_measure();
 
-float get_mag();
+int get_curve(float *data);
 
 #endif //_MEASUREMENTS_H_
