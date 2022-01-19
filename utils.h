@@ -47,6 +47,12 @@ typedef struct Config {
         goto exit; \
     }
 
+#define HANDLE_ERR(check, code) \
+    if (check != 0) { \
+        perror(code); \
+        goto exit; \
+    }
+
 //  Memory alloc, checking, and allignment
 #define MEM(ptr, size) \
     ptr = malloc(size); \

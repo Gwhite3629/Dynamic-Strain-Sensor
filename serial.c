@@ -73,7 +73,7 @@ HANDLE open_port(const char *dev)
     success = SetCommTimeouts(port, &timeouts);
     if (!success) {
         print_error("Failed to set serial timeouts");
-        CloseHanlde(port);
+        CloseHandle(port);
         return INVALID_HANDLE_VALUE;
     }
 

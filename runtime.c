@@ -29,12 +29,16 @@ int runtime(HANDLE dev)
     float current_mag;
     float avg;
 
+    pthread_t thr;
+
     // Get config data
     Config *config;
     char name[64] = "DEFAULT";
     printf("Enter config name:\n");
     scanf("%s", name);
     get_config(config, name);
+
+    HANDLE_ERR((ret = pthread_create(&thr, NULL, &quit_condition, NULL)), "pthread_create");
 
     // Setup window
     int pos_max = config->AVERAGE_DATA.WINDOW_SIZE;

@@ -48,7 +48,7 @@ int get_config(Config *config, char *name)
 
     MEM(config_start, sizeof(fpos_t));
 
-    VALID(config_file = fopen("config.cfg", "r"), FILE_ERROR);
+    VALID((config_file = fopen("config.cfg", "r")), FILE_ERROR);
 
     find_event(config_file, config_start, name);
 
