@@ -8,6 +8,12 @@
 
 //  CONSTANTS
 
+// Setup 
+#define CURVE_SIZE 20000
+
+// Waveform
+#define BIT_SIZE 2
+
 //  Measurement types
 #define GENERIC_MEASUREMENT 0
 #define PEAK_MEASUREMENT 1

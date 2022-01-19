@@ -18,7 +18,7 @@
 
 int runtime(HANDLE dev)
 {
-    int ret;
+    int ret = 0;
     int pos;
     int barrier = 0; // Current threshold
     int prev_barrier = 0; // Previous threshold
@@ -70,5 +70,8 @@ int runtime(HANDLE dev)
     }
 
 exit:
+    if (window)
+        free(window);
+
     return ret;
 }
