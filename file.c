@@ -17,7 +17,7 @@ int find_event(FILE *fd, fpos_t *prof_start, char *locator)
     int found = 0;
     char *buffer = NULL;
 
-    MEM(buffer, strlen(locator) + 1);
+    MEM(buffer, strlen(locator) + 1, char);
 
     buffer[strlen(locator)] = '\0';
 
@@ -44,9 +44,9 @@ int get_config(Config *config, char *name)
     FILE *config_file;
     fpos_t *config_start = NULL;
 
-    MEM(config, sizeof(Config));
+    MEM(config, sizeof(Config), FILE);
 
-    MEM(config_start, sizeof(fpos_t));
+    MEM(config_start, sizeof(fpos_t), fpos_t);
 
     VALID((config_file = fopen("config.cfg", "r")), FILE_ERROR);
 

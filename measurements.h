@@ -7,6 +7,7 @@
 #define _MEASUREMENTS_H_
 
 #include <stdint.h>
+#include <windows.h>
 
 #define FULL 0
 #define PART 1
@@ -16,6 +17,6 @@ void part_measure();
 
 void full_measure();
 
-int get_curve(float *data);
+int get_curve(HANDLE fd);
 
 #endif //_MEASUREMENTS_H_

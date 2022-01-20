@@ -9,6 +9,7 @@
 #include <windows.h>
 
 #include "GPIB_prof.h"
+#include "utils.h"
 
 //  Error message function
 void print_error(const char *context)
@@ -83,8 +84,8 @@ HANDLE open_port(const char *dev)
         return INVALID_HANDLE_VALUE;
     
     state.DCBlength = sizeof(DCB);
-    state.BaudRate = CBR_128000;
-    state.ByteSize = 9;
+    state.BaudRate = CBR_9600;
+    state.ByteSize = 8;
     state.fBinary = TRUE;
     state.fErrorChar = FALSE;
     state.fNull = FALSE;
@@ -125,16 +126,25 @@ int write_port(HANDLE port, char *buff, size_t size)
         return -1;
     }
 
-    usleep(size*200);
-
     return 0;
 }
 
 //  Read from device
-SSIZE_T read_port(HANDLE port, char *buff, size_t size)
+SSIZE_T binread(HANDLE port, int8_t *buff, size_t size)
 {
     DWORD received;
-    BOOL success = ReadFile(port, buff, size, &received, NULL);
+    BOOL success = ReadFile(port, buff, (uint)size, &received, NULL);
+    if (!success) {
+        print_error("Failed to read from port");
+        return -1;
+    }
+
+    return received;
+}
+SSIZE_T query(HANDLE port, char *buff, size_t size)
+{
+    DWORD received;
+    BOOL success = ReadFile(port, buff, (uint)size, &received, NULL);
     if (!success) {
         print_error("Failed to read from port");
         return -1;

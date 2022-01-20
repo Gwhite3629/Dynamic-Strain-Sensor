@@ -9,10 +9,13 @@
 //  CONSTANTS
 
 // Setup 
-#define CURVE_SIZE 20000
+#define CURVE_SIZE 2500
 
 // Waveform
-#define BIT_SIZE 2
+#define BIT_SIZE 1
+
+// Incoming header size
+//#define HEADER 
 
 //  Measurement types
 #define GENERIC_MEASUREMENT 0
@@ -60,8 +63,8 @@ typedef struct Config {
     }
 
 //  Memory alloc, checking, and allignment
-#define MEM(ptr, size) \
-    ptr = malloc(size); \
+#define MEM(ptr, size, type) \
+    ptr = malloc(size*sizeof(type)); \
     VALID(ptr, MEM_ERROR); \
     memset(ptr, 0, size);
 

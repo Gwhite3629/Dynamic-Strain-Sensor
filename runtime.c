@@ -42,7 +42,7 @@ int runtime(HANDLE dev)
 
     // Setup window
     int pos_max = config->AVERAGE_DATA.WINDOW_SIZE;
-    MEM(window, pos_max);
+    MEM(window, pos_max, float);
 
     // Main runtime loop
     while(!exit_runtime) {
