@@ -15,7 +15,7 @@ int def(HANDLE fd)
     int ret = 0;
 
     CHECK((ret = write_port(fd, "++mods 1\r", 9)));
-    CHECK((ret = write_port(fd, "++addr 16\r", 10)));
+    CHECK((ret = write_port(fd, "++addr 1\r", 9)));
     CHECK((ret = write_port(fd, "++eoi 0\r", 8)));
     CHECK((ret = write_port(fd, "++eot_enable 1\r", 15)));
     CHECK((ret = write_port(fd, "++eot_char 13\r", 14)));

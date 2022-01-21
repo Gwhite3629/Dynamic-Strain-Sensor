@@ -20,40 +20,35 @@ Potentially one channel to send queries and one channel to receive data.
 int get_curve(HANDLE fd)
 {
     int ret = 0;
-    char *dat = NULL;
     int8_t *data = NULL;
-    char c[1];
-    char recordl[8];
-    int lgth_num;
-    int length;
+    char c[64];
+    int y_off;
+    int y_mult;
 
-    CHECK((ret = write_port(fd, "*CLS\r", 6)));
-    CHECK((ret = write_port(fd, "ACQUIRE:STATE ON\r", 18)));
-    CHECK((ret = write_port(fd, "*OPC\r", 6)));
+    CHECK((ret = write_port(fd, "*CLS\r", 5)));
+    CHECK((ret = write_port(fd, "ACQUIRE:STATE ON\r", 17)));
+    CHECK((ret = write_port(fd, "*OPC\r", 5)));
 
-    MEM(data, CURVE_SIZE*BIT_SIZE, int8_t);
+    MEM(data, (CURVE_SIZE*BIT_SIZE), int8_t);
     printf("Allocated\n");
-    CHECK((ret = write_port(fd, "CURVE?\r", 8)));
+    CHECK((ret = write_port(fd, "CURVE?\r", 7)));
     printf("Written\n");
-    CHECK((ret = query(fd, c, 1)));
-    CHECK((ret = query(fd, c, 1)));
-    lgth_num = atoi(c);
-    CHECK((ret = query(fd, recordl, lgth_num)));
-    printf("lgth_num: %d\n");
-    recordl[lgth_num] = '\0';
-    length = atoi(recordl);
-    printf("Length: %d\n", length);
-    MEM(dat, (length), char)
-    CHECK((ret = query(fd, dat, (length))));
+    CHECK((ret = binread(fd, data, (CURVE_SIZE*BIT_SIZE))));
     printf("Read\nData:\n");
-    for(int i = 0; i < (length); i++) {
-        printf("%c", i, dat[i]);
+
+    CHECK((ret = write_port(fd, "WFMPRE:YMULT?\r", 14)));
+    CHECK((ret = query(fd, c, 64)));
+    y_mult = atoi(c);
+    CHECK((ret = write_port(fd, "WFMPRE:YOFF?\r", 13)));
+    CHECK((ret = query(fd, c, 64)));
+    y_off = atoi(c);
+
+    for(int i = 0; i < (CURVE_SIZE*BIT_SIZE); i++) {
+        printf("%d", (data[i]*y_mult) + y_off);
     }
     printf("\n");
 
 exit:
-    if (dat)
-        free(dat);
     if (data)
         free(data);
 
