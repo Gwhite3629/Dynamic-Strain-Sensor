@@ -27,6 +27,10 @@ int get_curve(HANDLE fd)
     int lgth_num;
     int length;
 
+    CHECK((ret = write_port(fd, "*CLS\r", 6)));
+    CHECK((ret = write_port(fd, "ACQUIRE:STATE ON\r", 18)));
+    CHECK((ret = write_port(fd, "*OPC\r", 6)));
+
     MEM(data, CURVE_SIZE*BIT_SIZE, int8_t);
     printf("Allocated\n");
     CHECK((ret = write_port(fd, "CURVE?\r", 8)));
@@ -41,10 +45,11 @@ int get_curve(HANDLE fd)
     printf("Length: %d\n", length);
     MEM(dat, (length), char)
     CHECK((ret = query(fd, dat, (length))));
-    printf("Read\n");
+    printf("Read\nData:\n");
     for(int i = 0; i < (length); i++) {
-        printf("Data[%d]: %c\n", i, dat[i]);
+        printf("%c", i, dat[i]);
     }
+    printf("\n");
 
 exit:
     if (dat)

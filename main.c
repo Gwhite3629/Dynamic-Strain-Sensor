@@ -12,7 +12,7 @@ int main(void)
 {
     uint ret = 0;
     HANDLE fd;
-    char *dev;
+    char *dev = NULL;
     int baud;
 
     MEM(dev, 64, char);
