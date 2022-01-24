@@ -21,13 +21,15 @@ int get_curve(HANDLE fd)
 {
     int ret = 0;
     int8_t *data = NULL;
-    char c[64];
-    int y_off;
-    int y_mult;
+    char c[80];
+    float y_off;
+    float y_mult;
+    float y_zero;
 
     CHECK((ret = write_port(fd, "*CLS\r", 5)));
     CHECK((ret = write_port(fd, "ACQUIRE:STATE ON\r", 17)));
     CHECK((ret = write_port(fd, "*OPC\r", 5)));
+    CHECK((ret = write_port(fd, "HEADER OFF\r", 11)));
 
     MEM(data, (CURVE_SIZE*BIT_SIZE), int8_t);
     printf("Allocated\n");
@@ -36,17 +38,21 @@ int get_curve(HANDLE fd)
     CHECK((ret = read_port(fd, data, (CURVE_SIZE*BIT_SIZE))));
     printf("Read\nData:\n");
 
-    CHECK((ret = write_port(fd, "WFMPRE:YMULT?\r", 14)));
-    CHECK((ret = read_port(fd, c, 64)));
-    y_mult = atoi(c);
-    CHECK((ret = write_port(fd, "WFMPRE:YOFF?\r", 13)));
-    CHECK((ret = read_port(fd, c, 64)));
-    y_off = atoi(c);
+    memset(c, 0, 80);
+    CHECK((ret = write_port(fd, "WFMPRE:YOFF?;YMULT?;YZERO?\r", 27)));
+    CHECK((ret = read_port(fd, c, 80)));
+
+    sscanf(c, "%e;%e;%e", &y_off, &y_mult, &y_zero);
+
+    y_off = ReverseFloat(y_off);
+    y_mult = ReverseFloat(y_mult);
+    y_zero = ReverseFloat(y_zero);
+
+    printf("y_off %e\ny_mult %e\ny_zero %e\n", y_off, y_mult, y_zero);
 
     for(int i = 0; i < (CURVE_SIZE*BIT_SIZE); i++) {
-        printf("%d", (data[i]*y_mult) + y_off);
+        printf("%hi", data[i]);
     }
-    printf("\n");
 
 exit:
     if (data)

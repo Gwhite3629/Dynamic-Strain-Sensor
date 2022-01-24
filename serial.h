@@ -16,13 +16,9 @@ void print_error(char *context); // Error context
 
 HANDLE open_port(const char *dev); // Name of device
 
-int binread(HANDLE port, // Serial device
-            int8_t *buf, // Read buffer
+int read_port(HANDLE port, // Serial device
+            void *buf, // Read buffer
             size_t size); // Number of bytes to read
-
-int query(HANDLE port, // Serial device
-          char *buf, // Read buffer
-          size_t size); // Number of bytes to read
 
 int write_port(HANDLE port, // Serial Device
                const char *buf, // Write buffer

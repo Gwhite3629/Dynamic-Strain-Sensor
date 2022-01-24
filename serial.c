@@ -65,9 +65,9 @@ HANDLE open_port(const char *dev)
 
     //  Set properties
     COMMTIMEOUTS timeouts = {0};
-    timeouts.ReadIntervalTimeout = 0;
-    timeouts.ReadTotalTimeoutConstant = 10000;
-    timeouts.ReadTotalTimeoutMultiplier = 1000;
+    timeouts.ReadIntervalTimeout = 1;
+    timeouts.ReadTotalTimeoutConstant = 1;
+    timeouts.ReadTotalTimeoutMultiplier = 1;
     timeouts.WriteTotalTimeoutConstant = 0;
     timeouts.WriteTotalTimeoutMultiplier = 0;
 
@@ -84,7 +84,7 @@ HANDLE open_port(const char *dev)
         return INVALID_HANDLE_VALUE;
     
     state.DCBlength = sizeof(DCB);
-    state.BaudRate = CBR_9600;
+    state.BaudRate = CBR_2400;
     state.ByteSize = 8;
     state.fBinary = TRUE;
     state.fErrorChar = FALSE;
@@ -132,18 +132,11 @@ int write_port(HANDLE port, char *buff, size_t size)
 //  Read from device
 SSIZE_T read_port(HANDLE port, void *buff, size_t size)
 {
-    SSIZE_T r;
-    DWORD received;
-    while (received < size) {
-        r = _read(port, buff + received, size + received);
-        if (r < 0) {
-            print_error("Failed to read from port");
-            return -1;
-        }
-        if (r == 0) {
-            break;
-        }
-        received += r;
+    DWORD received = 0;
+    BOOL success = ReadFile(port, buff, size, &received, NULL);
+    if (!success) {
+        print_error("Failed to read from port");
+        return -1;
     }
 
     return received;

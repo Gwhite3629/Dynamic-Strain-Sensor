@@ -82,4 +82,6 @@ float moving_average(float *window, // Active data window
                      int pos, // Position in window
                      float next); // Next number from main data
 
+float ReverseFloat(const float inFloat);
+
 #endif //_UTILS_H_
