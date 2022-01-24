@@ -130,24 +130,20 @@ int write_port(HANDLE port, char *buff, size_t size)
 }
 
 //  Read from device
-SSIZE_T binread(HANDLE port, int8_t *buff, size_t size)
+SSIZE_T read_port(HANDLE port, void *buff, size_t size)
 {
+    SSIZE_T r;
     DWORD received;
-    BOOL success = ReadFile(port, buff, (uint)size, &received, NULL);
-    if (!success) {
-        print_error("Failed to read from port");
-        return -1;
-    }
-
-    return received;
-}
-SSIZE_T query(HANDLE port, char *buff, size_t size)
-{
-    DWORD received;
-    BOOL success = ReadFile(port, buff, (uint)size, &received, NULL);
-    if (!success) {
-        print_error("Failed to read from port");
-        return -1;
+    while (received < size) {
+        r = _read(port, buff + received, size + received);
+        if (r < 0) {
+            print_error("Failed to read from port");
+            return -1;
+        }
+        if (r == 0) {
+            break;
+        }
+        received += r;
     }
 
     return received;

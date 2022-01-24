@@ -33,14 +33,14 @@ int get_curve(HANDLE fd)
     printf("Allocated\n");
     CHECK((ret = write_port(fd, "CURVE?\r", 7)));
     printf("Written\n");
-    CHECK((ret = binread(fd, data, (CURVE_SIZE*BIT_SIZE))));
+    CHECK((ret = read_port(fd, data, (CURVE_SIZE*BIT_SIZE))));
     printf("Read\nData:\n");
 
     CHECK((ret = write_port(fd, "WFMPRE:YMULT?\r", 14)));
-    CHECK((ret = query(fd, c, 64)));
+    CHECK((ret = read_port(fd, c, 64)));
     y_mult = atoi(c);
     CHECK((ret = write_port(fd, "WFMPRE:YOFF?\r", 13)));
-    CHECK((ret = query(fd, c, 64)));
+    CHECK((ret = read_port(fd, c, 64)));
     y_off = atoi(c);
 
     for(int i = 0; i < (CURVE_SIZE*BIT_SIZE); i++) {
