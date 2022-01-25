@@ -13,7 +13,9 @@ int main(void)
     uint ret = 0;
     HANDLE fd;
     char *dev = NULL;
-    int baud;
+    float *data = NULL;
+
+    MEM(data, 2500, float);
 
     MEM(dev, 64, char);
 
@@ -26,9 +28,16 @@ int main(void)
     printf("GPIB configured\n");
     CHECK((ret = init(fd)));
     printf("Setup complete\n");
-    CHECK((ret = get_curve(fd)));
+    CHECK((ret = get_curve(fd, &data)));
     printf("Completed\n");
 
 exit:
+    if (dev)
+        free(dev);
+    if (fd)
+        fclose(fd);
+    if (data)
+        free(data);
+
     return ret;
 }

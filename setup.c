@@ -14,7 +14,6 @@
 int init(HANDLE fd)
 {
     int ret = 0;
-    char dat[64];
 
     CHECK((ret = write_port(fd, "CURSOR:SELect:SOUrce CH1\r", 25)));
     CHECK((ret = write_port(fd, "CH1:COUPLING DC\r", 16)));

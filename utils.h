@@ -6,6 +6,8 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
+#include <stdbool.h>
+
 //  CONSTANTS
 
 // Setup 
@@ -44,7 +46,16 @@ typedef struct Config {
     AVERAGE_DATA AVERAGE_DATA;
     float PEAK_THRESHOLD;
     uint SAMPLE_FREQUENCY;
+    uint MEASURE_INTERVAL;
 } Config;
+
+//  Struct for peak comparison
+typedef struct PEAK{
+    float data[2500];
+    float peak_threshold;
+    bool detected;
+    bool done;
+} PEAK;
 
 //  MACROS
 
@@ -74,6 +85,8 @@ typedef struct Config {
         goto exit;
 
 //  FUNCTIONS
+
+float average();
 
 //  Moving average
 float moving_average(float *window, // Active data window

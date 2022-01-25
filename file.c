@@ -60,6 +60,7 @@ int get_config(Config *config, char *name)
     fscanf(config_file, "%u", &(config->AVERAGE_DATA.WINDOW_SIZE));
     fscanf(config_file, "%f", &(config->PEAK_THRESHOLD));
     fscanf(config_file, "%u", &(config->SAMPLE_FREQUENCY));
+    fscanf(config_file, "%u", &(config->MEASURE_INTERVAL));
 
 exit:
     free(config_start);

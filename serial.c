@@ -84,7 +84,7 @@ HANDLE open_port(const char *dev)
         return INVALID_HANDLE_VALUE;
     
     state.DCBlength = sizeof(DCB);
-    state.BaudRate = CBR_2400;
+    state.BaudRate = CBR_128000;
     state.ByteSize = 8;
     state.fBinary = TRUE;
     state.fErrorChar = FALSE;
@@ -149,7 +149,7 @@ int GPIB_conf(HANDLE fd, int profile)
 
     switch (profile) {
         case 0:
-            ret = def(fd);
+            CHECK((ret = def(fd)));
             break;
     }
 

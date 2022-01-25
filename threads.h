@@ -14,4 +14,6 @@ void *quit_condition(void *arg);
 
 void *time_measure(void *arg);
 
+void *find_peak(void *arg);
+
 #endif //_THREADS_H_

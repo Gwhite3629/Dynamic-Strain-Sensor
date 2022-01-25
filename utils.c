@@ -3,6 +3,22 @@
 //  Grady White
 //  1/7/22
 
+#include <stdbool.h>
+
+#include "utils.h"
+
+float average(float *window, int windowSize, float *sum, int *pos, float *input)
+{
+    float avg;
+    for (int i = 0; i < CURVE_SIZE*BIT_SIZE; i++) {
+        avg = moving_average(window, windowSize, sum, (*pos), input[i]);
+        (*pos)++;
+        if ((*pos) >= windowSize)
+            (*pos) = 0;
+    }
+    return avg;
+}
+
 float moving_average(float *window, int windowSize, float *sum, int pos, float next)
 {
     // Update sum

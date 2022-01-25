@@ -17,7 +17,7 @@ Potentially one channel to send queries and one channel to receive data.
 #include "serial.h"
 
 // Acquire entire data curve every 5ms
-int get_curve(HANDLE fd)
+int get_curve(HANDLE fd, float **output)
 {
     int ret = 0;
     int8_t *data = NULL;
@@ -44,14 +44,15 @@ int get_curve(HANDLE fd)
 
     sscanf(c, "%e;%e;%e", &y_off, &y_mult, &y_zero);
 
-    y_off = ReverseFloat(y_off);
-    y_mult = ReverseFloat(y_mult);
-    y_zero = ReverseFloat(y_zero);
+    //y_off = ReverseFloat(y_off);
+    //y_mult = ReverseFloat(y_mult);
+    //y_zero = ReverseFloat(y_zero);
 
     printf("y_off %e\ny_mult %e\ny_zero %e\n", y_off, y_mult, y_zero);
 
     for(int i = 0; i < (CURVE_SIZE*BIT_SIZE); i++) {
-        printf("%hi", data[i]);
+        (*output)[i] = (((float)data[i]-y_off) * y_mult) - y_zero;
+        printf("%f", (*output)[i]);
     }
 
 exit:
@@ -60,12 +61,20 @@ exit:
 
     return ret;
 }
-
-// Acquire peak of curve every 5ms
-int get_peak(float peak)
+/*
+int full_measure()
 {
     int ret = 0;
 
 exit:
     return ret;
 }
+
+int part_measure()
+{
+    int ret = 0;
+
+exit:
+    return ret;
+}
+*/

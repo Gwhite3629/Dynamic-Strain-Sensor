@@ -13,10 +13,10 @@
 #define PART 1
 #define SING 2
 
-void part_measure();
+int full_measure();
 
-void full_measure();
+int part_measure();
 
-int get_curve(HANDLE fd);
+int get_curve(HANDLE fd, float **output);
 
 #endif //_MEASUREMENTS_H_
