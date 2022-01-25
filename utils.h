@@ -7,6 +7,8 @@
 #define _UTILS_H_
 
 #include <stdbool.h>
+#include <string.h>
+#include <errno.h>
 
 //  CONSTANTS
 
@@ -62,6 +64,7 @@ typedef struct PEAK{
 //  Memory or file check
 #define VALID(check, code) \
     if (check == NULL) { \
+        fprintf(stderr, "%s: %s\n", code, strerror(errno)); \
         perror(code); \
         ret = FAULT; \
         goto exit; \
@@ -69,6 +72,7 @@ typedef struct PEAK{
 
 #define HANDLE_ERR(check, code) \
     if (check != 0) { \
+        fprintf(stderr, "%s: %s\n", code, strerror(errno)); \
         perror(code); \
         goto exit; \
     }
